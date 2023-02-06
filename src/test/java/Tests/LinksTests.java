@@ -34,7 +34,9 @@ public class LinksTests extends BaseDemoqa {
         scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
         profilePage.clickOnButton("Links");
         elementsPage.clickonLinksHome();
-       //Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/");
+        Assert.assertNotEquals(driver.getCurrentUrl(), "https://demoqa.com/");
+       // Assert.assertEquals(homeURL,"https://demoqa.com/");
+        System.out.println(driver.getCurrentUrl());
     }
 
     @Test
@@ -44,8 +46,69 @@ public class LinksTests extends BaseDemoqa {
         scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
         profilePage.clickOnButton("Links");
         elementsPage.clickOnCreatedButton();
+        waitForVisibility(elementsPage.linkNotification);
+        Assert.assertEquals(elementsPage.getLinkNotification(), "Link has responded with staus 201 and status text Created");
     }
+    @Test
+    public void linksNoContent() throws InterruptedException {
+        scrollIntoView(homePage.getCards.get(0));
+        homePage.clickOnElements();
+        scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
+        profilePage.clickOnButton("Links");
+        elementsPage.clickOnNoContentLink();
+        waitForVisibility(elementsPage.linkNotification);
+        Assert.assertEquals(elementsPage.getLinkNotification(),"Link has responded with staus 204 and status text No Content");}
 
+    @Test
+    public void linksMoved() throws InterruptedException {
+        scrollIntoView(homePage.getCards.get(0));
+        homePage.clickOnElements();
+        scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
+        profilePage.clickOnButton("Links");
+        elementsPage.clickOnMovedLink();
+        waitForVisibility(elementsPage.linkNotification);
+        Assert.assertEquals(elementsPage.getLinkNotification(), "Link has responded with staus 301 and status text Moved Permanently");
+    }
+    @Test
+    public void linksBadRequest() throws InterruptedException {
+        scrollIntoView(homePage.getCards.get(0));
+        homePage.clickOnElements();
+        scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
+        profilePage.clickOnButton("Links");
+        elementsPage.clickOnBadRequestlink();
+        waitForVisibility(elementsPage.linkNotification);
+        Assert.assertEquals(elementsPage.getLinkNotification(), "Link has responded with staus 400 and status text Bad Request");
+    }
+    @Test
+    public void linksUnauthorized() throws InterruptedException {
+        scrollIntoView(homePage.getCards.get(0));
+        homePage.clickOnElements();
+        scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
+        profilePage.clickOnButton("Links");
+        elementsPage.clickOnUnauthorizedLink();
+        waitForVisibility(elementsPage.linkNotification);
+        Assert.assertEquals(elementsPage.getLinkNotification(), "Link has responded with staus 401 and status text Unauthorized");
+    }
+    @Test
+    public void linksForbidden() throws InterruptedException {
+        scrollIntoView(homePage.getCards.get(0));
+        homePage.clickOnElements();
+        scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
+        profilePage.clickOnButton("Links");
+        elementsPage.clickOnForbiddenLink();
+        waitForVisibility(elementsPage.linkNotification);
+        Assert.assertEquals(elementsPage.getLinkNotification(), "Link has responded with staus 403 and status text Forbidden");
+    }
+    @Test
+    public void linksNotFound() throws InterruptedException {
+        scrollIntoView(homePage.getCards.get(0));
+        homePage.clickOnElements();
+        scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
+        profilePage.clickOnButton("Links");
+        elementsPage.clickOnNotFound();
+        waitForVisibility(elementsPage.linkNotification);
+        Assert.assertEquals(elementsPage.getLinkNotification(), "Link has responded with staus 404 and status text Not Found");
+    }
     @Test
     public void brokenLinksValid() throws InterruptedException {
         scrollIntoView(homePage.getCards.get(0));

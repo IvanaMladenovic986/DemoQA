@@ -33,8 +33,12 @@ public class BookStorePage extends BaseDemoqa {
     public WebElement registerButton;
     @FindBy(id = "login")
     public WebElement loginButton;
-    @FindBy(css = "btn.btn-primary")
+    @FindBy(linkText = "Log out")
     public WebElement logOutButton;
+    @FindBy(id = "userName-value")
+    public WebElement userNameValue;
+
+    public String getUserNameValue(){return userNameValue.getText();}
 
     public void clickOnLogOutButton(){logOutButton.click();}
 

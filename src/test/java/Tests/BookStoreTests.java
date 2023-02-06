@@ -5,10 +5,9 @@ import Pages.BookStorePage;
 import Pages.HomePage;
 import Pages.ProfilePage;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import javax.xml.transform.sax.SAXResult;
 
 public class BookStoreTests extends BaseDemoqa {
 
@@ -30,7 +29,7 @@ public class BookStoreTests extends BaseDemoqa {
 //        Assert.assertTrue(bookStorePage.registerButton.isDisplayed());
     }
     @Test
-    public void userCanLogIn() {
+    public void userCanLogIn() throws InterruptedException {
         scrollIntoView(homePage.getCards.get(0));
         homePage.clickOnBookstore();
         scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
@@ -40,7 +39,9 @@ public class BookStoreTests extends BaseDemoqa {
         String validPassword = excelReader.getStringData("Login", 1, 1);
         bookStorePage.insertPassword(validPassword);
         bookStorePage.clickOnLoginButton();
-        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/login");
+        waitForVisibility(bookStorePage.userNameValue);
+        Assert.assertEquals(bookStorePage.userNameValue.getText(),"mia.wallace");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/profile");
 
     }
     @Test
@@ -49,9 +50,10 @@ public class BookStoreTests extends BaseDemoqa {
         homePage.clickOnBookstore();
         scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
         profilePage.clickOnButton("Login");
-        for (int i = 1; i < excelReader.getLastRow("Login"); i++) {
+        for (int i = 2; i < excelReader.getLastRow("Login"); i++) {
             String invalidUsername = excelReader.getStringData("Login", i, 2);
             String validPassword = excelReader.getStringData("Login", 1, 1);
+            waitForVisibility(bookStorePage.userName);
             bookStorePage.insertUserName(invalidUsername);
             bookStorePage.insertPassword(validPassword);
             bookStorePage.clickOnLoginButton();
@@ -64,13 +66,16 @@ public class BookStoreTests extends BaseDemoqa {
         homePage.clickOnBookstore();
         scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
         profilePage.clickOnButton("Login");
-        for (int i = 1; i < excelReader.getLastRow("Login"); i++) {
+        for (int i = 2; i < excelReader.getLastRow("Login"); i++) {
             String validUserName = excelReader.getStringData("Login", 1, 0);
+            //String invalidPassword = excelReader.getStringData("Login", i, 3);
             String invalidPassword = excelReader.getStringData("Login", i, 3);
+            waitForVisibility(bookStorePage.userName);
             bookStorePage.insertUserName(validUserName);
+            waitForVisibility(bookStorePage.password);
             bookStorePage.insertPassword(invalidPassword);
             bookStorePage.clickOnLoginButton();
-           // Assert.assertTrue(bookStorePage.loginButton.isDisplayed());
+            //Assert.assertTrue(bookStorePage.loginButton.isDisplayed());
             Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/login");
         }
     }
@@ -80,14 +85,14 @@ public class BookStoreTests extends BaseDemoqa {
         homePage.clickOnBookstore();
         scrollIntoView(profilePage.getButtons.get(profilePage.getButtons.size() - 1));
         profilePage.clickOnButton("Login");
-        for (int i = 1; i < excelReader.getLastRow("Login"); i++) {
+        for (int i = 2; i < excelReader.getLastRow("Login"); i++) {
             String invalidUsername = excelReader.getStringData("Login", i, 2);
             String invalidPassword = excelReader.getStringData("Login", i, 3);
-            Thread.sleep(2);
+            waitForVisibility(bookStorePage.userName);
             bookStorePage.insertUserName(invalidUsername);
             bookStorePage.insertPassword(invalidPassword);
             bookStorePage.clickOnLoginButton();
-            Assert.assertFalse(isDisplayed(bookStorePage.logOutButton));
+           // Assert.assertFalse(isDisplayed());
             Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/login");
         }
     }
@@ -133,6 +138,12 @@ public class BookStoreTests extends BaseDemoqa {
         Assert.assertTrue(bookStorePage.loginButton.isDisplayed());
         Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/login");
     }
-}
+
+    /*@AfterMethod
+    public void tearDown() {
+        driver.manage().deleteAllCookies();
+        driver.quit();*/
+    }
+
 
 

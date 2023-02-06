@@ -11,6 +11,11 @@ public class WebTablesPage extends BaseDemoqa {
     @FindBy(id = "addNewRecordButton")
     public WebElement addNewButton;
 
+    @FindBy(id = "searchBox")
+    public WebElement searchBox;
+    @FindBy(linkText = "Delete")
+    public WebElement deleteButton;
+
 
     public void clickOnAddNew(){addNewButton.click();}
 }
